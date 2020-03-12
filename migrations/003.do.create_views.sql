@@ -1,0 +1,6 @@
+CREATE TABLE views (
+  id SERIAL PRIMARY KEY,
+  date_viewed TIMESTAMP NOT NULL DEFAULT now(),
+  blog_id INTEGER REFERENCES blogs(id) ON DELETE SET NULL,
+  reader_id INTEGER REFERENCES users(id) ON DELETE SET NULL
+);

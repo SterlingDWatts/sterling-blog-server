@@ -6,6 +6,7 @@ const cors = require("cors");
 const validateBearerToken = require("./middleware/validate-bearer-token");
 const errorHandler = require("./middleware/error-handler");
 const { NODE_ENV } = require("./config");
+const blogsRouter = require("./blogs/blogs-router");
 
 // create Express app
 const app = express();
@@ -25,6 +26,9 @@ app.use(validateBearerToken);
 app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
+
+// endpoints
+app.use("/api/blogs", blogsRouter);
 
 // error handling middleware gives short response if in production
 app.use(errorHandler);
