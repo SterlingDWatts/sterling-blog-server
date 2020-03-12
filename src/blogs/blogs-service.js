@@ -19,6 +19,30 @@ const BlogsService = {
       .groupBy("b.id", "u.id");
   },
 
+  getById(db, blogId) {
+    return BlogsService.getAllBlogs(db)
+      .where("b.id", blogId)
+      .first();
+  },
+
+  insertView(db, newView) {
+    return db
+      .insert(newView)
+      .into("views")
+      .returning("*")
+      .then(([view]) => view)
+      .then(view => BlogsService.getById(db, view.blog_id));
+  },
+
+  insertBlog(db, newBlog) {
+    return db
+      .insert(newBlog)
+      .into("blogs")
+      .returning("*")
+      .then(([blog]) => blog)
+      .then(blog => BlogsService.getById(db, blog.id));
+  },
+
   serializeBlogs(blogs) {
     return blogs.map(this.serializeBlog);
   },
