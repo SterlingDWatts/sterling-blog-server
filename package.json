@@ -19,6 +19,9 @@
     }
   },
   "keywords": [],
+  "engines": {
+    "node": "12.13.0"
+  },
   "author": "Sterling Watts",
   "license": "ISC",
   "dependencies": {
