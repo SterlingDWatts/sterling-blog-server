@@ -233,10 +233,13 @@ function cleanTables(db) {
 }
 
 function seedUsers(db, users) {
-  // TODO const preppedUsers = users.map(user => ({...user, password: bcrypt.hashSync(user.password, 1)}))
+  const preppedUsers = users.map(user => ({
+    ...user,
+    password: bcrypt.hashSync(user.password, 1)
+  }));
   return db
     .into("users")
-    .insert(users) // TODO replace with preppedUsers
+    .insert(preppedUsers)
     .then(() =>
       db.raw(`SELECT setval('users_id_seq', ?)`, [users[users.length - 1].id])
     );
@@ -262,7 +265,13 @@ function seedMaliciousBlog(db, user, blog) {
   return seedBlogs(db, [user], [blog]);
 }
 
-// TODO makeAuthHeader(user, secret = process.env.JWT_secret) {}
+function makeAuthHeader(user, secret = process.env.JWT_secret) {
+  const token = jwt.sign({ id: user.id }, secret, {
+    subject: user.username,
+    algorithm: "HS256"
+  });
+  return `Bearer ${token}`;
+}
 
 module.exports = {
   makeUsersArray,
@@ -276,5 +285,6 @@ module.exports = {
   cleanTables,
   seedBlogs,
   seedUsers,
-  seedMaliciousBlog
+  seedMaliciousBlog,
+  makeAuthHeader
 };

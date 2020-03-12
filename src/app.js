@@ -7,6 +7,7 @@ const validateBearerToken = require("./middleware/validate-bearer-token");
 const errorHandler = require("./middleware/error-handler");
 const { NODE_ENV } = require("./config");
 const blogsRouter = require("./blogs/blogs-router");
+const authRouter = require("./auth/auth-router");
 
 // create Express app
 const app = express();
@@ -20,7 +21,7 @@ app.use(helmet());
 app.use(cors());
 
 // authentication middleware
-app.use(validateBearerToken);
+// app.use(validateBearerToken);
 
 // basic endpoint for app.js
 app.get("/", (req, res) => {
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 
 // endpoints
 app.use("/api/blogs", blogsRouter);
+app.use("/api/auth", authRouter);
 
 // error handling middleware gives short response if in production
 app.use(errorHandler);

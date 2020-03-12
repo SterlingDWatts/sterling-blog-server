@@ -26,7 +26,6 @@ describe("Blogs Endpoints", () => {
       it("responds with 200 and an empty list", () => {
         return supertest(app)
           .get("/api/blogs")
-          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .expect(200, []);
       });
     });
@@ -42,7 +41,6 @@ describe("Blogs Endpoints", () => {
         );
         return supertest(app)
           .get("/api/blogs")
-          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .expect(200, expectedBlogs);
       });
     });
@@ -60,7 +58,6 @@ describe("Blogs Endpoints", () => {
       it("removes XSS attack content", () => {
         return supertest(app)
           .get("/api/blogs")
-          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .expect(200)
           .expect(res => {
             expect(res.body[0].title).to.eql(expectedBlog.title);
@@ -86,7 +83,6 @@ describe("Blogs Endpoints", () => {
       };
       return supertest(app)
         .post("/api/blogs")
-        .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
         .send(newBlog)
         .expect(201)
         .expect(res => {
@@ -136,7 +132,6 @@ describe("Blogs Endpoints", () => {
 
         return supertest(app)
           .post("/api/blogs")
-          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .send(newBlog)
           .expect(400, {
             error: `Missing '${field}' in request body`
@@ -154,7 +149,6 @@ describe("Blogs Endpoints", () => {
         const nonExistantBlog = 123456;
         return supertest(app)
           .get(`/api/blogs/${nonExistantBlog}`)
-          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .expect(404, { error: "Blog doesn't exist" });
       });
     });
@@ -175,7 +169,6 @@ describe("Blogs Endpoints", () => {
 
         return supertest(app)
           .get(`/api/blogs/${blogId}`)
-          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .expect(200, expectedBlog);
       });
     });
@@ -193,7 +186,6 @@ describe("Blogs Endpoints", () => {
       it("removes xss attack content", () => {
         return supertest(app)
           .get(`/api/blogs/${maliciousBlog.id}`)
-          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .expect(res => {
             expect(res.body.title).to.eql(expectedBlog.title);
             expect(res.body.content).to.eql(expectedBlog.content);
