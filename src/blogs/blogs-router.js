@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const BlogsService = require("./blogs-service");
-// TODO { requireAuth } = require("../middleware/jwt-auth")
+const { requireAuth } = require("../middleware/jwt-auth")
 
 const blogsRouter = express.Router();
 const jsonBodyParser = express.json();
