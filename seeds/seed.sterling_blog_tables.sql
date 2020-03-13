@@ -10,13 +10,13 @@ TRUNCATE
 
 INSERT INTO users (first_name, last_name, username, email, password, nickname, privileges)
 VALUES 
-  ('Sterling', 'Watts', 'SterlingDWatts', 'SterlingDWatts@gmail.com', 'aaAA11!!', null, 'Admin'),
-  ('Dunder', 'Mifflin', 'dunder', 'dunder-mifflin@gmail.com', 'bbBB22@@', 'dundee', 'Writer'),
-  ('Charlie', 'Bloggs', 'c.bloggs', 'charlie-blogs@gmail.com', 'ccCC33##', 'Charlie', 'Writer'),
-  ('Bodeep', 'Deboop', 'b.deboop', 'bodeep-deboop@yahoo.com', 'ddDD44$$', 'Bo', 'Writer'),
-  ('Sam', 'Smith', 's.smith', 'sammy_smith1234567@hotmail.com', 'eeEE55%%', 'Sammy', 'Writer'),
-  ('Alex', 'Taylor', 'lexlor', 'lexlorTheRexlor@gmail.com', 'ffFF66^^', 'Lex', 'Writer'),
-  ('Ping', 'Won-In', 'wippy', 'wip-it-ping@excite.com', 'ggGG77&&', 'Ping', 'User');
+  ('Sterling', 'Watts', 'SterlingDWatts', 'SterlingDWatts@gmail.com', '$2a$12$sxCa9GPk3.d2iksb.bbnGet9UGMVqiWnYsOQf7Pxt0TQz7vTnNlzu', null, 'Admin'),
+  ('Dunder', 'Mifflin', 'dunder', 'dunder-mifflin@gmail.com', '$2a$12$376O2QeDKyl8aws73gsrO.LwSSQVdRI7/LJEAsK7Zz5ps0XDS6LxS', 'dundee', 'Writer'),
+  ('Charlie', 'Bloggs', 'c.bloggs', 'charlie-blogs@gmail.com', '$2a$12$WFmOFYPDLkRKHTT0byF7/.dPRMNM7/csiQTvfAur60GDLu1gYMYgG', 'Charlie', 'Writer'),
+  ('Bodeep', 'Deboop', 'b.deboop', 'bodeep-deboop@yahoo.com', '$2a$12$B0I/lgve9D22NurcgFNxtO6uSdIpDczNItB1DE0J8OJ/ol2lPPRdS', 'Bo', 'Writer'),
+  ('Sam', 'Smith', 's.smith', 'sammy_smith1234567@hotmail.com', '$2a$12$C10Xr7ggwj3Ujlebuf7Uue4/ny136QXlL6ru9LQn8wWR16RlcUj6a', 'Sammy', 'Writer'),
+  ('Alex', 'Taylor', 'lexlor', 'lexlorTheRexlor@gmail.com', '$2a$12$HdJelNB6IQbaiR00oZ299O4olkj86VenAm89T1PRs6QvhOPW4N5Fi', 'Lex', 'Writer'),
+  ('Ping', 'Won-In', 'wippy', 'wip-it-ping@excite.com', '$2a$12$WRfMdG9jLdmfA.qKNShi3uML.KgDe3.smpA4p2EQQVpGS9QHW7e3K', 'Ping', 'User');
 
 INSERT INTO blogs (title, picture, author_id, content)
 VALUES

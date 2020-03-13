@@ -15,7 +15,7 @@ const app = express();
 
 // log 'tiny' output if in production, else log 'common'
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
-app.use(morgan(morganOption, {skip: () => NODE_ENV === "test"}));
+app.use(morgan(morganOption, { skip: () => NODE_ENV === "test" }));
 
 // hide sensitive data with 'helmet' and allow cors
 app.use(helmet());
