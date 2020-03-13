@@ -15,7 +15,7 @@ blogsRouter
       })
       .catch(next);
   })
-  .post(jsonBodyParser, (req, res, next) => {
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { title, picture, content, author_id } = req.body;
     const newBlog = { title, picture, content };
 

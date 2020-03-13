@@ -83,6 +83,7 @@ describe("Blogs Endpoints", () => {
       };
       return supertest(app)
         .post("/api/blogs")
+        .set("Authorization", helpers.makeAuthHeader(testUser))
         .send(newBlog)
         .expect(201)
         .expect(res => {
@@ -132,6 +133,7 @@ describe("Blogs Endpoints", () => {
 
         return supertest(app)
           .post("/api/blogs")
+          .set("Authorization", helpers.makeAuthHeader(testUser))
           .send(newBlog)
           .expect(400, {
             error: `Missing '${field}' in request body`

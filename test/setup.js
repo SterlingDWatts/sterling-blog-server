@@ -6,7 +6,7 @@ process.env.JWT_EXPIRY = "5h";
 require("dotenv").config();
 
 process.env.TEST_DATABASE_URL =
-  process.env.TEST_DATABASE_URL || "postgresql://dunder_mifflin:pass@localhost/sterling-blog-server-test";
+  process.env.TEST_DATABASE_URL || "postgresql://";
 
 const { expect } = require("chai");
 const supertest = require("supertest");

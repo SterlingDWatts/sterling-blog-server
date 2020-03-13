@@ -6,14 +6,22 @@ const usersRouter = express.Router();
 const jsonBodyParer = express.json();
 
 usersRouter.post("/", jsonBodyParer, (req, res, next) => {
-  const { first_name, last_name, username, email, password } = req.body;
+  const {
+    first_name,
+    last_name,
+    username,
+    email,
+    password,
+    privileges
+  } = req.body;
 
   for (const field of [
     "first_name",
     "last_name",
     "username",
     "email",
-    "password"
+    "password",
+    "privileges"
   ]) {
     if (!req.body[field]) {
       return res.status(400).json({
@@ -23,10 +31,37 @@ usersRouter.post("/", jsonBodyParer, (req, res, next) => {
   }
 
   const passwordError = UsersService.validatePassword(password);
-  if (password) {
+  if (passwordError) {
     return res.status(400).json({ error: passwordError });
   }
-  res.status(200).send();
+  UsersService.hasUserWithUsername(req.app.get("db"), username)
+    .then(hasUserWithUsername => {
+      if (hasUserWithUsername) {
+        return res.status(400).json({
+          error: "Username already taken"
+        });
+      }
+      return UsersService.hashPassword(password).then(hashedPassword => {
+        const newUser = {
+          first_name,
+          last_name,
+          username,
+          email,
+          privileges,
+          password: hashedPassword,
+          date_created: "now()"
+        };
+        return UsersService.insertUser(req.app.get("db"), newUser).then(
+          user => {
+            res
+              .status(201)
+              .location(path.posix.join(req.originalUrl, `/${user.id}`))
+              .json(UsersService.serializeUser(user));
+          }
+        );
+      });
+    })
+    .catch(next);
 });
 
 module.exports = usersRouter;

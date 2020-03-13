@@ -32,7 +32,8 @@ describe("Users endpoints", () => {
         "last_name",
         "username",
         "email",
-        "password"
+        "password",
+        "privileges"
       ];
 
       requiredFields.forEach(field => {
@@ -126,16 +127,67 @@ describe("Users endpoints", () => {
 
       it("responds 400 'Username already taken' when username isn't unique", () => {
         const duplicateUser = {
-          first_name: "test first_name",
-          last_name: "test last_name",
-          username: testUser.username,
-          email: "test email",
-          password: "aaAA11!!"
+          ...testUser
         };
         return supertest(app)
           .post("/api/users")
           .send(duplicateUser)
           .expect(400, { error: "Username already taken" });
+      });
+    });
+
+    context("Happy path", () => {
+      it("responds 201, serialized user, storing bcryped password", () => {
+        const newUser = {
+          first_name: "realperson",
+          last_name: "notexampleson",
+          username: "realPNotE",
+          email: "real_p_not_e@aol.com",
+          password: "aaAA11!!",
+          privileges: "User"
+        };
+        return supertest(app)
+          .post("/api/users")
+          .send(newUser)
+          .expect(201)
+          .expect(res => {
+            expect(res.body).to.have.property("id");
+            expect(res.body.first_name).to.eql(newUser.first_name);
+            expect(res.body.last_name).to.eql(newUser.last_name);
+            expect(res.body.username).to.eql(newUser.username);
+            expect(res.body.email).to.eql(newUser.email);
+            expect(res.body).to.not.have.property("password");
+            expect(res.body.privileges).to.eql(newUser.privileges);
+            expect(res.headers.location).to.eql(`/api/users/${res.body.id}`);
+            const expectedDate = new Date().toLocaleString("en", {
+              timeZone: "UTC"
+            });
+            const actualDate = new Date(res.body.date_created).toLocaleString();
+            expect(actualDate).to.eql(expectedDate);
+          })
+          .expect(res => {
+            db.from("users")
+              .select("*")
+              .where({ id: res.body.id })
+              .first()
+              .then(row => {
+                expect(row.first_name).to.eql(newUser.first_name);
+                expect(row.last_name).to.eql(newUser.last_name);
+                expect(row.username).to.eql(newUser.username);
+                expect(row.email).to.eql(newUser.email);
+                expect(row.privileges).to.eql(newUser.privileges);
+                const expectedDate = new Date().toLocaleString("en", {
+                  timeZone: "UTC"
+                });
+                const actualDate = new Date(row.date_created).toLocaleString();
+                expect(actualDate).to.eql(expectedDate);
+
+                return bcrypt.compare(newUser.password, row.password);
+              })
+              .then(compareMatch => {
+                expect(compareMatch).to.be.true;
+              });
+          });
       });
     });
   });
