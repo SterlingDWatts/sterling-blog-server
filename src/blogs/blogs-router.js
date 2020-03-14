@@ -16,7 +16,7 @@ blogsRouter
       .catch(next);
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { title, picture, content, author_id } = req.body;
+    const { title, picture, content } = req.body;
     const newBlog = { title, picture, content };
 
     for (const [key, value] of Object.entries(newBlog)) {
@@ -27,7 +27,7 @@ blogsRouter
       }
     }
 
-    newBlog.author_id = author_id;
+    newBlog.author_id = req.user.id;
 
     BlogsService.insertBlog(req.app.get("db"), newBlog)
       .then(blog => {
