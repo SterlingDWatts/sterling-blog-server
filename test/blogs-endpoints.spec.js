@@ -196,7 +196,7 @@ describe("Blogs Endpoints", () => {
     });
   });
 
-  describe("DELETE /api/blogs/:blog_id", () => {
+  describe.only("DELETE /api/blogs/:blog_id", () => {
     context("Given there are no blogs in the database", () => {
       beforeEach("insert blogs", () =>
         helpers.seedBlogs(db, testUsers, testBlogs, testViews)
@@ -242,7 +242,7 @@ describe("Blogs Endpoints", () => {
         return supertest(app)
           .delete(`/api/blogs/${idToRemove}`)
           .set("Authorization", helpers.makeAuthHeader(userNotBlogAuthor))
-          .expect(401)
+          .expect(401, { error: "Unauthorized request" })
           .then(res =>
             supertest(app)
               .get("/api/blogs")
@@ -251,17 +251,14 @@ describe("Blogs Endpoints", () => {
       });
 
       it("responds with 204 and removes the blog if an Admin deletes", () => {
-        const idToRemove = 1;
+        const idToRemove = 2;
         const expectedBlogs = testBlogs
           .filter(blog => blog.id !== idToRemove)
           .map(blog => helpers.makeExpectedBlog(testUsers, blog, testViews));
-        const userNotAuthorIsAdmin = testUsers.find(
-          user => user.id !== testBlogs[idToRemove - 1].author_id
-        );
-        userNotAuthorIsAdmin.privileges = "Admin";
+        const userIsAdmin = testUsers[0];
         return supertest(app)
           .delete(`/api/blogs/${idToRemove}`)
-          .set("Authorization", helpers.makeAuthHeader(userNotAuthorIsAdmin))
+          .set("Authorization", helpers.makeAuthHeader(userIsAdmin))
           .expect(204)
           .then(res =>
             supertest(app)

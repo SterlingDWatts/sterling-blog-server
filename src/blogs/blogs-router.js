@@ -51,6 +51,12 @@ blogsRouter
     });
   })
   .delete(requireAuth, (req, res, next) => {
+    if (
+      req.user.id !== res.blog["author:id"] &&
+      req.user.privileges !== "Admin"
+    ) {
+      return res.status(401).json({ error: "Unauthorized request" });
+    }
     BlogsService.deleteBlog(req.app.get("db"), req.params.blog_id)
       .then(() => {
         res.status(204).end();
