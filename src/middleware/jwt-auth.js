@@ -15,7 +15,7 @@ function requireAuth(req, res, next) {
 
     AuthService.getUserWithUserName(req.app.get("db"), payload.sub)
       .then(user => {
-        if (!user) {
+        if (!user || payload.privileges !== "Admin") {
           return res.status(401).json({ error: "Unauthorized request" });
         }
         req.user = user;

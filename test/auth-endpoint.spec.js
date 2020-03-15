@@ -71,7 +71,7 @@ describe("Auth Endpoints", () => {
         password: testUser.password
       };
       const expectedToken = jwt.sign(
-        { id: testUser.id },
+        { id: testUser.id, privileges: testUser.privileges },
         process.env.JWT_SECRET,
         {
           subject: testUser.username,
@@ -93,7 +93,7 @@ describe("Auth Endpoints", () => {
 
     it("responds 200 and JWT auth token using secret", () => {
       const expectedToken = jwt.sign(
-        { id: testUser.id },
+        { id: testUser.id, privileges: testUser.privileges },
         process.env.JWT_SECRET,
         {
           subject: testUser.username,

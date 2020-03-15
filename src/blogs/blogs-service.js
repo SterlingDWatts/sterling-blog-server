@@ -43,6 +43,12 @@ const BlogsService = {
       .then(blog => BlogsService.getById(db, blog.id));
   },
 
+  deleteBlog(db, id) {
+    return db("blogs")
+      .where({ id })
+      .delete();
+  },
+
   serializeBlogs(blogs) {
     return blogs.map(this.serializeBlog);
   },
