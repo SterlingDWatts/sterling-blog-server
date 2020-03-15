@@ -49,6 +49,13 @@ blogsRouter
     BlogsService.insertView(req.app.get("db"), newView).then(blog => {
       res.json(BlogsService.serializeBlog(blog));
     });
+  })
+  .delete(requireAuth, (req, res, next) => {
+    BlogsService.deleteBlog(req.app.get("db"), req.params.blog_id)
+      .then(() => {
+        res.status(204).end();
+      })
+      .catch(next);
   });
 
 async function checkBlogExists(req, res, next) {

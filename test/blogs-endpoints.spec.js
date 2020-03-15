@@ -195,4 +195,80 @@ describe("Blogs Endpoints", () => {
       });
     });
   });
+
+  describe("DELETE /api/blogs/:blog_id", () => {
+    context("Given there are no blogs in the database", () => {
+      beforeEach("insert blogs", () =>
+        helpers.seedBlogs(db, testUsers, testBlogs, testViews)
+      );
+
+      it("responds with 404", () => {
+        const nonExistantBlog = 123456;
+        return supertest(app)
+          .delete(`/api/blogs/${nonExistantBlog}`)
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(404);
+      });
+    });
+
+    context("Given there are blogs in the database", () => {
+      beforeEach("insert blogs", () =>
+        helpers.seedBlogs(db, testUsers, testBlogs, testViews)
+      );
+
+      it("responds with 204 and removes the blog", () => {
+        const idToRemove = 1;
+        const expectedBlogs = testBlogs
+          .filter(blog => blog.id !== idToRemove)
+          .map(blog => helpers.makeExpectedBlog(testUsers, blog, testViews));
+
+        return supertest(app)
+          .delete(`/api/blogs/${idToRemove}`)
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(204)
+          .then(res =>
+            supertest(app)
+              .get("/api/blogs")
+              .expect(expectedBlogs)
+          );
+      });
+
+      it("responds with 401 and Unauthorized when user_id doesn't match author.id", () => {
+        const idToRemove = 1;
+        const userNotBlogAuthor = testUsers.find(
+          user => user.id !== testBlogs[idToRemove - 1].author_id
+        );
+        userNotBlogAuthor.privileges = "Writer";
+        return supertest(app)
+          .delete(`/api/blogs/${idToRemove}`)
+          .set("Authorization", helpers.makeAuthHeader(userNotBlogAuthor))
+          .expect(401)
+          .then(res =>
+            supertest(app)
+              .get("/api/blogs")
+              .expect(200)
+          );
+      });
+
+      it("responds with 204 and removes the blog if an Admin deletes", () => {
+        const idToRemove = 1;
+        const expectedBlogs = testBlogs
+          .filter(blog => blog.id !== idToRemove)
+          .map(blog => helpers.makeExpectedBlog(testUsers, blog, testViews));
+        const userNotAuthorIsAdmin = testUsers.find(
+          user => user.id !== testBlogs[idToRemove - 1].author_id
+        );
+        userNotAuthorIsAdmin.privileges = "Admin";
+        return supertest(app)
+          .delete(`/api/blogs/${idToRemove}`)
+          .set("Authorization", helpers.makeAuthHeader(userNotAuthorIsAdmin))
+          .expect(204)
+          .then(res =>
+            supertest(app)
+              .get("/api/blogs")
+              .expect(200, expectedBlogs)
+          );
+      });
+    });
+  });
 });

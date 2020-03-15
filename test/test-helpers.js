@@ -266,7 +266,7 @@ function seedMaliciousBlog(db, user, blog) {
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_secret) {
-  const token = jwt.sign({ id: user.id }, secret, {
+  const token = jwt.sign({ id: user.id, privileges: user.privileges }, secret, {
     subject: user.username,
     algorithm: "HS256"
   });
