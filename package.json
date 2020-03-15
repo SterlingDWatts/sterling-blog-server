@@ -8,7 +8,7 @@
     "test": "mocha --require test/setup.js --watch",
     "migrate": "postgrator --config postgrator-config.js",
     "migrate:test": "env NODE_ENV=test npm run migrate",
-    "migrate:production": "env sslmode=verify-full DATABASE_URL=$(heroku config:get DATABASE_URL) npm run migrate",
+    "migrate:production": "env SSL=true DATABASE_URL=$(heroku config:get DATABASE_URL) npm run migrate",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "predeploy": "npm audit && npm run migrate:production",
