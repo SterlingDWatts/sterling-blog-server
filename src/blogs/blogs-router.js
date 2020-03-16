@@ -63,7 +63,14 @@ blogsRouter
       })
       .catch(next);
   })
-  .patch(jsonBodyParser, (req, res, next) => {
+  .patch(requireAuth, jsonBodyParser, (req, res, next) => {
+    if (
+      req.user.id !== res.blog["author:id"] &&
+      req.user.privileges !== "Admin"
+    ) {
+      return res.status(401).json({ error: "Unauthorized request" });
+    }
+
     const { id, title, picture, content } = req.body;
     const updatedBlog = { title, picture, content };
 
