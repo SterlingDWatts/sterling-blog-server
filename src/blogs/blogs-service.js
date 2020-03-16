@@ -49,6 +49,12 @@ const BlogsService = {
       .delete();
   },
 
+  updateBlog(db, id, newBlogFields) {
+    return db("blogs")
+      .where({ id })
+      .update(newBlogFields);
+  },
+
   serializeBlogs(blogs) {
     return blogs.map(this.serializeBlog);
   },

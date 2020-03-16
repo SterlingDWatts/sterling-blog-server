@@ -196,7 +196,7 @@ describe("Blogs Endpoints", () => {
     });
   });
 
-  describe.only("DELETE /api/blogs/:blog_id", () => {
+  describe("DELETE /api/blogs/:blog_id", () => {
     context("Given there are no blogs in the database", () => {
       beforeEach("insert blogs", () =>
         helpers.seedBlogs(db, testUsers, testBlogs, testViews)
@@ -265,6 +265,30 @@ describe("Blogs Endpoints", () => {
               .get("/api/blogs")
               .expect(200, expectedBlogs)
           );
+      });
+    });
+  });
+
+  describe("PATCH /api/blogs/:blog_id", () => {
+    context("Given there are blogs in the database", () => {
+      beforeEach("insert blogs", () =>
+        helpers.seedBlogs(db, testUsers, testBlogs, testViews)
+      );
+
+      it("returns with 200 when updating the blog", () => {
+        const idToUpdate = 1;
+        const updatedBlog = {
+          id: idToUpdate,
+          title: "this is the new title for ever and always",
+          picture: "https://www.picture.com/cat.jpg",
+          content: "ldjf j dlfj j  lkdjf   this is a long blog"
+        };
+
+        return supertest(app)
+          .patch(`/api/blogs/${idToUpdate}`)
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .send(updatedBlog)
+          .expect(204);
       });
     });
   });
