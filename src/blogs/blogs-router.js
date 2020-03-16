@@ -71,7 +71,7 @@ blogsRouter
       return res.status(401).json({ error: "Unauthorized request" });
     }
 
-    const { id, title, picture, content } = req.body;
+    const { title, picture, content } = req.body;
     const updatedBlog = { title, picture, content };
 
     for (const [key, value] of Object.entries(updatedBlog)) {
@@ -82,7 +82,7 @@ blogsRouter
       }
     }
 
-    BlogsService.updateBlog(req.app.get("db"), id, updatedBlog)
+    BlogsService.updateBlog(req.app.get("db"), req.params.blog_id, updatedBlog)
       .then(() => res.status(204).end())
       .catch(next);
   });
