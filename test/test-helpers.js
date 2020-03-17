@@ -164,9 +164,9 @@ function makeExpectedBlog(users, blog, views = []) {
 }
 
 function sortBlogsByDate(blogsList) {
-  blogsList.sort((blogA, blogB) => 
-    blogA.date_created > blogB.date_created ? 1 : -1
-  )
+  blogsList.sort((blogA, blogB) =>
+    blogA.date_created < blogB.date_created ? 1 : -1
+  );
 }
 
 function makeExpectedBlogViews(users, blogId, views) {
