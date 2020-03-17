@@ -163,6 +163,12 @@ function makeExpectedBlog(users, blog, views = []) {
   };
 }
 
+function sortBlogsByDate(blogsList) {
+  blogsList.sort((blogA, blogB) => 
+    blogA.date_created > blogB.date_created ? 1 : -1
+  )
+}
+
 function makeExpectedBlogViews(users, blogId, views) {
   const expectedViews = views.filter(view => view.blog_id === blogId);
 
@@ -280,6 +286,7 @@ module.exports = {
   makeExpectedBlogViews,
   makeMaliciousBlog,
   makeViewsArray,
+  sortBlogsByDate,
 
   makeBlogsFixtures,
   cleanTables,

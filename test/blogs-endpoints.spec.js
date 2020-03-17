@@ -39,6 +39,7 @@ describe("Blogs Endpoints", () => {
         const expectedBlogs = testBlogs.map(blog =>
           helpers.makeExpectedBlog(testUsers, blog, testViews)
         );
+        helpers.sortBlogsByDate(expectedBlogs)
         return supertest(app)
           .get("/api/blogs")
           .expect(200, expectedBlogs);
@@ -221,7 +222,7 @@ describe("Blogs Endpoints", () => {
         const expectedBlogs = testBlogs
           .filter(blog => blog.id !== idToRemove)
           .map(blog => helpers.makeExpectedBlog(testUsers, blog, testViews));
-
+        helpers.sortBlogsByDate(expectedBlogs);
         return supertest(app)
           .delete(`/api/blogs/${idToRemove}`)
           .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
@@ -255,6 +256,7 @@ describe("Blogs Endpoints", () => {
         const expectedBlogs = testBlogs
           .filter(blog => blog.id !== idToRemove)
           .map(blog => helpers.makeExpectedBlog(testUsers, blog, testViews));
+        helpers.sortBlogsByDate(expectedBlogs)
         const userIsAdmin = testUsers[0];
         return supertest(app)
           .delete(`/api/blogs/${idToRemove}`)

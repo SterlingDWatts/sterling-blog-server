@@ -16,7 +16,8 @@ const BlogsService = {
       )
       .leftJoin("views AS v", "b.id", "v.blog_id")
       .leftJoin("users AS u", "b.author_id", "u.id")
-      .groupBy("b.id", "u.id");
+      .groupBy("b.id", "u.id")
+      .orderBy("b.date_created");
   },
 
   getById(db, blogId) {
