@@ -18,7 +18,7 @@ picturesRouter.use(
 picturesRouter.use(bodyParser.urlencoded({ extended: false }));
 
 picturesRouter.route("/upload_image").post((req, res) => {
-  console.log(__dirname);
+  console.log(req.files);
   FroalaEditor.Image.upload(req, "/pictures/uploads/", (err, data) => {
     if (err) {
       return res.send(JSON.stringify(err));

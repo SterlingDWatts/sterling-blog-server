@@ -10,6 +10,7 @@ const blogsRouter = require("./blogs/blogs-router");
 const authRouter = require("./auth/auth-router");
 const usersRouter = require("./users/users-router");
 const picturesRouter = require("./pictures/pictures-router");
+const signatureRouter = require("./signature/signature-router");
 
 // create Express app
 const app = express();
@@ -35,6 +36,7 @@ app.use("/api/blogs", blogsRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/pictures", picturesRouter);
+app.use("/api/get_signature", signatureRouter);
 
 // error handling middleware gives short response if in production
 app.use(errorHandler);
