@@ -29,12 +29,4 @@ picturesRouter.route("/upload_image").post((req, res) => {
   });
 });
 
-const filesDir = path.join(
-  path.dirname(require.main.filename),
-  "pictures/uploads"
-);
-if (!fs.existsSync(filesDir)) {
-  fs.mkdirSync(filesDir);
-}
-
 module.exports = picturesRouter;
