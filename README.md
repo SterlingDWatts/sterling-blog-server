@@ -6,19 +6,19 @@ A Server for a Content Management System.
 
 ## Endpoints
 
-1. /auth Endpoint  
-   .._ POST /login: handles user logging in  
-   .._ POST /refresh: handles refreshing credentials for logged in user
-2. /blogs Endpoint  
-   .._ GET / returns list of all blogs  
-   .._ POST / adds new blog to list  
-   .._ GET /:blog_id returns blog with matching id  
-   .._ DELETE /:blog_id deletes blog  
-   ..\* PATCH /:blog_id edits blog with matching id
-3. /signature Endpoint  
-   ..\* GET / returns credentials for AWS bucket
-4. /users Endpoint  
-   ..\* POST / adds new user to database
+1. /auth Endpoint
+   - POST /login: handles user logging in
+   - POST /refresh: handles refreshing credentials for logged in user
+2. /blogs Endpoint
+   - GET / returns list of all blogs
+   - POST / adds new blog to list
+   - GET /:blog_id returns blog with matching id
+   - DELETE /:blog_id deletes blog
+   - PATCH /:blog_id edits blog with matching id
+3. /signature Endpoint
+   - GET / returns credentials for AWS bucket
+4. /users Endpoint
+   - POST / adds new user to database
 
 ## Technologies
 
